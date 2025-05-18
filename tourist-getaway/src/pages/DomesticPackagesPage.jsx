@@ -105,6 +105,9 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
         email: '',
         contactNumber: '',
         destination: selectedCity?.name || '',
+        access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+        subject: 'New Domestic Booking Inquiry!',
+        botcheck: false,
     });
     const [submissionMessage, setSubmissionMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -112,16 +115,27 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
     // Update destination if selectedCity changes while modal is open
     React.useEffect(() => {
         if (selectedCity) {
-            setFormData(prev => ({ ...prev, destination: selectedCity.name }));
+            setFormData(prev => ({ ...prev, destination: selectedCity.name, botcheck: false,
+                // Ensure access_key and subject are maintained
+                access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY, // IMPORTANT: Replace again
+                subject: `New Booking Inquiry for ${selectedCity.name}`, }));
         }
     }, [selectedCity]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
+        const { name, value, type, checked } = e.target;
+        // Handle the honeypot checkbox separately
+        if (name === "botcheck" && type === "checkbox") {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: checked,
+            }));
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -133,23 +147,54 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
         setIsSubmitting(true);
         setSubmissionMessage({ type: 'info', text: 'Submitting your request...' });
 
-        // Simulate API call / email service
-        console.log('Form data to be submitted:', formData);
+        // Prepare data for Web3Forms.
+        // Ensure all fields you want to receive in the email are included.
+        // The 'access_key' is critical.
+        // The 'botcheck' field is for the honeypot.
+        const payload = {
+            ...formData,
+            // You can add more static details if needed
+            form_source: 'BookingModal - ' + (selectedCity?.name || 'Unknown Destination')
+        };
+
+        // Make sure to remove the honeypot field from the visible form data if it's not meant to be displayed
+        // but it should be part of the payload sent to Web3Forms if you use it.
+        // In this setup, it's part of the formData state, so it's sent.
+
         try {
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            // Assume success
-            setSubmissionMessage({ type: 'success', text: `Thank you, ${formData.name}! Your booking inquiry for ${formData.destination} has been received. We will contact you shortly.` });
-            // Reset form
-            setFormData({ name: '', email: '', contactNumber: '', destination: selectedCity?.name || '' });
-            // Close modal after a delay and clear message
-            setTimeout(() => {
-                onClose();
-                setSubmissionMessage('');
-            }, 4000);
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setSubmissionMessage({ type: 'success', text: `Thank you, ${formData.name}! Your booking inquiry for ${formData.destination} has been received. We will contact you shortly.` });
+                setFormData({
+                    name: '',
+                    email: '',
+                    contactNumber: '',
+                    destination: selectedCity?.name || '',
+                    access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY, // IMPORTANT: Replace again
+                    subject: `New Booking Inquiry for ${selectedCity?.name || 'Destination'}`,
+                    botcheck: false, // Reset honeypot
+                });
+                setTimeout(() => {
+                    onClose();
+                    setSubmissionMessage('');
+                }, 4000);
+            } else {
+                console.error("Web3Forms Submission error:", result.message);
+                setSubmissionMessage({ type: 'error', text: result.message || 'There was an error submitting your request. Please try again.' });
+            }
         } catch (error) {
-            console.error("Submission error:", error);
-            setSubmissionMessage({ type: 'error', text: 'There was an error submitting your request. Please try again.' });
+            console.error("Network or submission error:", error);
+            setSubmissionMessage({ type: 'error', text: 'There was an issue connecting. Please try again.' });
         } finally {
             setIsSubmitting(false);
         }
@@ -158,24 +203,21 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
     if (!isOpen) return null;
 
     return (
-        // Modal backdrop: semi-transparent black
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300 ease-in-out">
-            {/* Modal content: white background, standard text colors for light theme */}
             <div className="bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-lg relative transform transition-all duration-300 ease-in-out scale-100">
                 <button
                     onClick={onClose}
-                    // Close button styling for light theme
                     className="absolute top-4 right-4 text-slate-500 hover:text-slate-700 transition-colors"
                     aria-label="Close booking form"
                 >
                     <X size={24} />
                 </button>
-                {/* Header text colors for light theme */}
                 <h2 className="text-2xl font-semibold text-slate-800 mb-2">Book Your Trip</h2>
                 <p className="text-sm text-slate-600 mb-6">
                     Inquire about our package for <span className="font-semibold text-sky-600">{selectedCity?.name || 'this destination'}</span>.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Your Input components for name, email, contactNumber */}
                     <Input
                         id="name"
                         name="name"
@@ -200,28 +242,36 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
                         name="contactNumber"
                         type="tel"
                         label="Contact Number"
-                        placeholder="72234 43456"
+                        placeholder="72234 43456" // Or your desired placeholder
                         value={formData.contactNumber}
                         onChange={handleChange}
                         required
+                    />
+                    {/* Honeypot field for spam protection - visually hidden */}
+                    <input
+                        type="checkbox"
+                        name="botcheck"
+                        id="botcheck"
+                        checked={formData.botcheck}
+                        onChange={handleChange}
+                        style={{ display: 'none' }}
+                        aria-hidden="true"
                     />
                     <div>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            // Button styling for light theme
                             className="w-full bg-sky-600 hover:bg-sky-700 disabled:bg-sky-400 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
                         >
                             {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                         </button>
                     </div>
                 </form>
-                {/* Submission message styling for light theme */}
                 {submissionMessage.text && (
                     <p className={`mt-4 text-sm p-3 rounded-md text-center ${
                         submissionMessage.type === 'success' ? 'bg-green-100 text-green-700' :
                             submissionMessage.type === 'error' ? 'bg-red-100 text-red-700' :
-                                'bg-sky-100 text-sky-700' // For info
+                                'bg-sky-100 text-sky-700'
                     }`}>
                         {submissionMessage.text}
                     </p>

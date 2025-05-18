@@ -58,24 +58,37 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
         email: '',
         contactNumber: '',
         destination: selectedCity?.name || '',
+        access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+        subject: 'New International Booking Inquiry!',
+        botcheck: false,
     });
     const [submissionMessage, setSubmissionMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     React.useEffect(() => {
         if (selectedCity) {
-            setFormData(prev => ({ ...prev, destination: selectedCity.name }));
+            setFormData(prev => ({ ...prev, destination: selectedCity.name, botcheck: false,
+                // Ensure access_key and subject are maintained
+                access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY, // IMPORTANT: Replace again
+                subject: `New Booking Inquiry for ${selectedCity.name}`, }));
         }
     }, [selectedCity]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
+        const { name, value, type, checked } = e.target;
+        // Handle the honeypot checkbox separately
+        if (name === "botcheck" && type === "checkbox") {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: checked,
+            }));
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.name || !formData.email || !formData.contactNumber) {
@@ -85,18 +98,54 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
         setIsSubmitting(true);
         setSubmissionMessage({ type: 'info', text: 'Submitting your request...' });
 
-        console.log('Form data to be submitted (International):', formData);
+        // Prepare data for Web3Forms.
+        // Ensure all fields you want to receive in the email are included.
+        // The 'access_key' is critical.
+        // The 'botcheck' field is for the honeypot.
+        const payload = {
+            ...formData,
+            // You can add more static details if needed
+            form_source: 'BookingModal - ' + (selectedCity?.name || 'Unknown Destination')
+        };
+
+        // Make sure to remove the honeypot field from the visible form data if it's not meant to be displayed
+        // but it should be part of the payload sent to Web3Forms if you use it.
+        // In this setup, it's part of the formData state, so it's sent.
+
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            setSubmissionMessage({ type: 'success', text: `Thank you, ${formData.name}! Your booking inquiry for ${formData.destination} has been received. We will contact you shortly.` });
-            setFormData({ name: '', email: '', contactNumber: '', destination: selectedCity?.name || '' });
-            setTimeout(() => {
-                onClose();
-                setSubmissionMessage('');
-            }, 4000);
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setSubmissionMessage({ type: 'success', text: `Thank you, ${formData.name}! Your booking inquiry for ${formData.destination} has been received. We will contact you shortly.` });
+                setFormData({
+                    name: '',
+                    email: '',
+                    contactNumber: '',
+                    destination: selectedCity?.name || '',
+                    access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY, // IMPORTANT: Replace again
+                    subject: `New Booking Inquiry for ${selectedCity?.name || 'Destination'}`,
+                    botcheck: false, // Reset honeypot
+                });
+                setTimeout(() => {
+                    onClose();
+                    setSubmissionMessage('');
+                }, 4000);
+            } else {
+                console.error("Web3Forms Submission error:", result.message);
+                setSubmissionMessage({ type: 'error', text: result.message || 'There was an error submitting your request. Please try again.' });
+            }
         } catch (error) {
-            console.error("Submission error:", error);
-            setSubmissionMessage({ type: 'error', text: 'There was an error submitting your request. Please try again.' });
+            console.error("Network or submission error:", error);
+            setSubmissionMessage({ type: 'error', text: 'There was an issue connecting. Please try again.' });
         } finally {
             setIsSubmitting(false);
         }
@@ -114,11 +163,12 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
                 >
                     <X size={24} />
                 </button>
-                <h2 className="text-2xl font-semibold text-slate-800 mb-2">Book Your International Trip</h2>
+                <h2 className="text-2xl font-semibold text-slate-800 mb-2">Book Your Trip</h2>
                 <p className="text-sm text-slate-600 mb-6">
                     Inquire about our package for <span className="font-semibold text-sky-600">{selectedCity?.name || 'this destination'}</span>.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Your Input components for name, email, contactNumber */}
                     <Input
                         id="name"
                         name="name"
@@ -143,10 +193,20 @@ const BookingFormModal = ({ isOpen, onClose, selectedCity }) => {
                         name="contactNumber"
                         type="tel"
                         label="Contact Number"
-                        placeholder="+1 (555) 123-4567" // Example placeholder
+                        placeholder="72234 43456" // Or your desired placeholder
                         value={formData.contactNumber}
                         onChange={handleChange}
                         required
+                    />
+                    {/* Honeypot field for spam protection - visually hidden */}
+                    <input
+                        type="checkbox"
+                        name="botcheck"
+                        id="botcheck"
+                        checked={formData.botcheck}
+                        onChange={handleChange}
+                        style={{ display: 'none' }}
+                        aria-hidden="true"
                     />
                     <div>
                         <button
