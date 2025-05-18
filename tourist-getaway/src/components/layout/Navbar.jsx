@@ -36,10 +36,10 @@ function Navbar() {
                         >
                             <img
                                 src={companyLogo}
-                                alt="TouristGetaway Logo"
+                                alt="Tourist Getaways Logo"
                                 className="h-10 w-auto" // Logo size
                             />
-                            <span>TouristGetaway</span>
+                            <span>Tourist Getaways</span>
                         </Link>
                     </div>
 
@@ -48,10 +48,9 @@ function Navbar() {
                         <div className="ml-10 flex items-baseline space-x-4">
                             {[
                                 { to: "/", label: "Home" },
-                                { to: "/all-packages", label: "Packages" },
                                 { to: "/domestic-packages", label: "Domestic" },
                                 { to: "/international-packages", label: "International" },
-                                { to: "/contact-us", label: "Contact Us" },
+                                { to: "/contact-us", label: "Contact" },
                             ].map((item) => (
                                 <NavLink
                                     key={item.label}
@@ -104,8 +103,7 @@ function Navbar() {
                         { to: "/", label: "Home" },
                         { to: "/domestic-packages", label: "Domestic" },
                         { to: "/international-packages", label: "International" },
-                        { to: "/all-packages", label: "Packages" },
-                        { to: "/contact-us", label: "Contact Us" },
+                        { to: "/contact-us", label: "Contact" },
                     ].map((item) => (
                         <NavLink
                             key={item.label}

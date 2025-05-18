@@ -22,7 +22,7 @@ const MapPinIcon = () => (
 // HomePage component
 function HomePage() {
     // Background image for the hero section
-    const backgroundImageUrl = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1770&q=80';
+    const backgroundImageUrl = '/src/assets/home_page.jpg';
 
     // State for triggering animations
     const [animate, setAnimate] = useState(false);
@@ -65,7 +65,7 @@ function HomePage() {
                     {companyLogo && (
                         <img
                             src={companyLogo}
-                            alt="TouristGetaways Company Logo"
+                            alt="Tourist Getaways Company Logo"
                             className={`w-28 h-28 md:w-36 md:h-36 mb-6 object-contain drop-shadow-lg ${animationBase} ${animate ? `${animationFinal} delay-100` : animationInitial}`}
                         />
                     )}

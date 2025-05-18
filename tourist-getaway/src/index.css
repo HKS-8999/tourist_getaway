@@ -2,18 +2,18 @@
 
 @import "tailwindcss"; /* This imports Tailwind's base, components, and utilities */
 
-/* Custom base styles and layer overrides */
+/* Custom base styles and layer overrides for a consistent light theme */
 @layer base {
   body {
-    /* Base body styling with new selection colors */
-    @apply bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 min-h-screen flex flex-col antialiased font-roboto selection:bg-sky-500 selection:text-white transition-colors duration-300;
+    /* Base body styling: light background, standard text color, and light theme selection colors */
+    @apply bg-slate-50 text-slate-700 min-h-screen flex flex-col antialiased font-sans selection:bg-sky-500 selection:text-white transition-colors duration-300;
   }
   #root {
     @apply w-full flex-grow flex flex-col;
   }
-  /* Global heading styles */
+  /* Global heading styles: standard text color for light theme */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-poppins text-slate-900 dark:text-white;
+    @apply font-sans text-slate-900; /* Default to dark text for headings on light backgrounds */
   }
   h1 {
     @apply text-4xl font-bold mb-6;
@@ -29,9 +29,9 @@
   }
 }
 
-/* Custom focus ring style for improved accessibility with the new palette */
+/* Custom focus ring style for improved accessibility, light theme offset */
 *:focus-visible {
-  @apply ring-2 ring-sky-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 outline-none;
+  @apply ring-2 ring-sky-500 ring-offset-2 ring-offset-white outline-none; /* ring-offset-white for light backgrounds */
 }
 
 /* Additional global styles can be added here */

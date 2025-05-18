@@ -4,24 +4,22 @@ import Navbar from './components/layout/Navbar';
 import HomePage from './pages/HomePage.jsx';
 import DomesticPackagesPage from './pages/DomesticPackagesPage';
 import InternationalPackagesPage from './pages/InternationalPackagesPage';
-import PackageList from './components/dashboard/PackageList';
-import PackageDetailsPage from './pages/PackageDetailsPage';
-import ContactUsPage from './pages/ContactUsPage'; // Import the new ContactUsPage
+import ContactUsPage from './pages/ContactUsPage';
 
 // Layout component that includes the Navbar and Footer
-// Removed theme and toggleTheme props
+// Styles are now set for a consistent light theme
 const LayoutWithNavbar = ({ children }) => {
     return (
-        // Simplified background for a single theme (light)
+        // Main layout container with a light slate background
         <div className="flex flex-col min-h-screen bg-slate-50">
-            <Navbar /> {/* Navbar no longer needs theme props */}
+            <Navbar /> {/* Navbar should also be styled for light theme internally */}
             <main className="flex-grow">
                 {children}
             </main>
-            {/* Simplified footer for a single theme (light) */}
-            <footer className="bg-white text-slate-500 text-center p-6 mt-auto shadow-inner border-t border-slate-200">
+            {/* Footer with light background and text colors */}
+            <footer className="bg-white text-slate-600 text-center p-6 mt-auto shadow-inner border-t border-slate-200">
                 <div className="container mx-auto">
-                    <p className="text-sm">&copy; {new Date().getFullYear()} TouristGetaway. All rights reserved.</p>
+                    <p className="text-sm">&copy; {new Date().getFullYear()} Tourist Getaways. All rights reserved.</p>
                     <p className="text-xs mt-1">Crafting memories, one journey at a time.</p>
                 </div>
             </footer>
@@ -31,19 +29,15 @@ const LayoutWithNavbar = ({ children }) => {
 
 // Main App component
 function App() {
-    // Theme state and toggle logic have been removed
+    // Theme state and toggle logic have been previously removed
 
     return (
         <Router>
             <Routes>
-                {/* Routes no longer need to pass theme props */}
+                {/* All routes use LayoutWithNavbar, which enforces light theme */}
                 <Route path="/" element={<LayoutWithNavbar><HomePage /></LayoutWithNavbar>} />
-                <Route path="/all-packages" element={<LayoutWithNavbar><PackageList /></LayoutWithNavbar>} />
-                <Route path="/package/:id" element={<LayoutWithNavbar><PackageDetailsPage /></LayoutWithNavbar>} />
                 <Route path="/domestic-packages" element={<LayoutWithNavbar><DomesticPackagesPage /></LayoutWithNavbar>} />
                 <Route path="/international-packages" element={<LayoutWithNavbar><InternationalPackagesPage /></LayoutWithNavbar>} />
-                <Route path="/packages" element={<LayoutWithNavbar><PackageList /></LayoutWithNavbar>} />
-                {/* Add the new route for the Contact Us page */}
                 <Route path="/contact-us" element={<LayoutWithNavbar><ContactUsPage /></LayoutWithNavbar>} />
             </Routes>
         </Router>
