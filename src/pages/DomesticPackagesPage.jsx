@@ -7,73 +7,73 @@ const domesticCities = [
     {
         id: 'goa',
         name: 'Goa',
-        imageUrl: '/src/assets/domestic/goa.jpg',
+        imageUrl: 'domestic/goa.jpg',
         description: 'Sun-kissed beaches and vibrant nightlife.'
     },
     {
         id: 'kerala',
         name: 'Kerala',
-        imageUrl: '/src/assets/domestic/Kerala.png',
+        imageUrl: 'domestic/Kerala.png',
         description: 'Lush backwaters and serene landscapes.'
     },
     {
         id: 'rajasthan',
         name: 'Rajasthan',
-        imageUrl: '/src/assets/domestic/Rajasthan.jpg',
+        imageUrl: 'domestic/Rajasthan.jpg',
         description: 'Majestic forts and rich cultural heritage.'
     },
     {
         id: 'himachal',
         name: 'Himachal Pradesh',
-        imageUrl: '/src/assets/domestic/himachal.jpg',
+        imageUrl: 'domestic/himachal.jpg',
         description: 'Breathtaking mountains and adventure sports.'
     },
     {
         id: 'ujjain',
         name: 'Ujjain',
-        imageUrl: '/src/assets/domestic/ujjain.jpg',
+        imageUrl: 'domestic/ujjain.jpg',
         description: 'Historical landmarks.'
     },
     {
         id: "andaman",
         name: "Andaman and Nicobar Islands",
-        imageUrl: "/src/assets/domestic/andaman.jpg",
+        imageUrl: "domestic/andaman.jpg",
         description: "Pristine beaches, turquoise waters, and lush coral reefs."
     },
     {
         id: "ladakh",
         name: "Ladakh",
-        imageUrl: "/src/assets/domestic/ladakh.jpg",
+        imageUrl: "domestic/ladakh.jpg",
         description: "High-altitude desert, Buddhist monasteries, and stunning mountain vistas."
     },
     {
         id: "ayodhya",
         name: "Ayodhya",
-        imageUrl: "/src/assets/domestic/ayodhya.jpg",
+        imageUrl: "domestic/ayodhya.jpg",
         description: "Ancient city, revered pilgrimage site, and rich historical significance."
     },
     {
         id: "manali",
         name: "Manali",
-        imageUrl: "/src/assets/domestic/manali.jpg",
+        imageUrl: "domestic/manali.jpg",
         description: "Himalayan resort town, adventure sports, and scenic valleys."
     },
     {
         id: "kashmir",
         name: "Kashmir",
-        imageUrl: "/src/assets/domestic/kashmir.jpg",
+        imageUrl: "domestic/kashmir.jpg",
         description: "Paradise on Earth, serene lakes, and snow-capped mountains."
     },
     {
         id: "gir",
         name: "Gir National Park",
-        imageUrl: "/src/assets/domestic/gir.jpg",
+        imageUrl: "domestic/gir.jpg",
         description: "Last refuge of the Asiatic lion and diverse wildlife."
     },
     {
         id: "tamilnadu",
         name: "Tamil Nadu",
-        imageUrl: "/src/assets/domestic/tamilnadu.jpg",
+        imageUrl: "domestic/tamilnadu.jpg",
         description: "Ancient temples, vibrant culture, and classical traditions."
     }
 ];
@@ -298,7 +298,7 @@ function DomesticPackagesPage() {
     };
 
     // Placeholder image for the header background - specific to domestic travel
-    const headerBackgroundImageUrl = "src/assets/domestic/domestic_header.jpg"; // Example: Indian landscape or monument
+    const headerBackgroundImageUrl = "domestic/domestic_header.jpg"; // Example: Indian landscape or monument
 
     return (
         // Page container with light slate background, consistent with App.jsx

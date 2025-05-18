@@ -7,25 +7,25 @@ const internationalCities = [
     {
         id: "singapore",
         name: "Singapore",
-        imageUrl: "/src/assets/international/singapore.jpg",
+        imageUrl: "international/singapore.jpg",
         description: "Futuristic cityscapes and lush garden oases."
     },
     {
         id: "malaysia",
         name: "Malaysia",
-        imageUrl: "/src/assets/international/malaysia.jpg",
+        imageUrl: "international/malaysia.jpg",
         description: "Diverse cultures, stunning rainforests, and vibrant cities."
     },
     {
         id: "thailand",
         name: "Thailand",
-        imageUrl: "/src/assets/international/thailand.jpg",
+        imageUrl: "international/thailand.jpg",
         description: "Ornate temples, beautiful beaches, and bustling street life."
     },
     {
         id: "maldives",
         name: "Maldives",
-        imageUrl: "/src/assets/international/maldives.jpg",
+        imageUrl: "international/maldives.jpg",
         description: "Luxurious overwater bungalows and pristine turquoise lagoons."
     }
 ]
@@ -248,7 +248,7 @@ function InternationalPackagesPage() {
     };
 
     // Placeholder image for the header background
-    const headerBackgroundImageUrl = "/src/assets/international/international_header.jpg"; // A generic international travel image
+    const headerBackgroundImageUrl = "international/international_header.jpg"; // A generic international travel image
 
     return (
         <div className="bg-slate-50 min-h-[calc(100vh-5rem)]">

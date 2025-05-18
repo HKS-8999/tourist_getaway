@@ -4,35 +4,35 @@ import React, { useState, useEffect } from 'react';
 const testimonialsData = [
     {
         id: 't1',
-        imageUrl: '/src/assets/testimonial/Review1.png', // Adjusted for a single display
+        imageUrl: 'testimonial/Review1.png', // Adjusted for a single display
         name: 'Mr. Hiren Panchal & Family',
         quote: 'Kerala Trip',
         altText: 'Happy customer Mr. Hiren Panchal & Family on their vacation in Kerala'
     },
     {
         id: 't2',
-        imageUrl: '/src/assets/testimonial/Review2.png',
+        imageUrl: 'testimonial/Review2.png',
         name: 'Abhishek Singh',
         quote: 'Rajasthan Trip',
         altText: 'Satisfied client Abhishek Singh enjoying Rajasthan'
     },
     {
         id: 't3',
-        imageUrl: '/src/assets/testimonial/Review3.png',
+        imageUrl: 'testimonial/Review3.png',
         name: 'Mr. Rajeev Sharma',
         quote: 'Ujjain Tour',
         altText: 'Mr. Rajeev Sharma exploring Ujjain'
     },
     {
         id: 't4',
-        imageUrl: '/src/assets/testimonial/Review4.png',
+        imageUrl: 'testimonial/Review4.png',
         name: 'Mr. Mukesh Chaudhary',
         quote: 'Kerala Trip',
         altText: 'Mr. Mukesh Chaudhary on her Kerala tour'
     },
     {
         id: 't5',
-        imageUrl: '/src/assets/testimonial/Review5.png',
+        imageUrl: 'testimonial/Review5.png',
         name: 'Mr. Bhagwan Singh',
         quote: 'Himachal Trip',
         altText: 'Mr. Bhagwan Singh exploring the vibrant streets of Himachal Pradesh'
