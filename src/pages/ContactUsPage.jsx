@@ -29,7 +29,7 @@ const ContactDetailItem = ({ icon, title, children, isLink = false }) => (
 // Main ContactUsPage component
 function ContactUsPage() {
     // Background image URL
-    const destinationImageUrl = "/public/contact-us.jpg";
+    const destinationImageUrl = "contact-us.jpg";
     // Assuming navbar height is roughly 5rem (h-20 in Tailwind)
     const minPageHeight = "calc(100vh - 5rem)";
 

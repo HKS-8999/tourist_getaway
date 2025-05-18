@@ -22,7 +22,7 @@ const MapPinIcon = () => (
 // HomePage component
 function HomePage() {
     // Background image for the hero section
-    const backgroundImageUrl = '/src/assets/home_page.jpg';
+    const backgroundImageUrl = '/home_page.jpg';
 
     // State for triggering animations
     const [animate, setAnimate] = useState(false);
