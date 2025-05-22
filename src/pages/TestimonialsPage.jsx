@@ -15,7 +15,7 @@ const videoTestimonialsData = [
 ];
 
 function TestimonialsPage() {
-    const headerBackgroundImageUrl = "/testimonial/testimonial_background.jpg"; // Ensure this path is correct
+    const headerBackgroundImageUrl = "/testimonial/testimonial_background1.jpg"; // Ensure this path is correct
 
     return (
         <div className="bg-slate-50 min-h-[calc(100vh-5rem)]">
