@@ -50,6 +50,7 @@ function Navbar() {
                                 { to: "/", label: "Home" },
                                 { to: "/domestic-packages", label: "Domestic" },
                                 { to: "/international-packages", label: "International" },
+                                { to: "/testimonials", label: "Testimonials" }, // Add this line
                                 { to: "/contact-us", label: "Contact" },
                             ].map((item) => (
                                 <NavLink

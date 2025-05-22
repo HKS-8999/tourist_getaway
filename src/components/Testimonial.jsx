@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-// Sample testimonial data - replace with your actual testimonials
 const testimonialsData = [
     {
         id: 't1',
-        imageUrl: 'testimonial/Review1.png', // Adjusted for a single display
+        imageUrl: 'testimonial/Review1.png',
         name: 'Mr. Hiren Panchal & Family',
         quote: 'Kerala Trip',
         altText: 'Happy customer Mr. Hiren Panchal & Family on their vacation in Kerala'
@@ -35,47 +34,80 @@ const testimonialsData = [
         imageUrl: 'testimonial/Review5.png',
         name: 'Mr. Bhagwan Singh',
         quote: 'Himachal Trip',
-        altText: 'Mr. Bhagwan Singh exploring the vibrant streets of Himachal Pradesh'
+        altText: 'Mr. Bhagwan Singh exploring Himachal Pradesh'
+    },
+    {
+        id: 't6',
+        imageUrl: 'testimonial/Review6.PNG',
+        name: 'Mr. Santosh Jain',
+        quote: 'Kashmir Trip',
+        altText: 'Mr. Bhagwan Singh exploring Kashmir with Family'
+    },
+    {
+        id: 't7',
+        imageUrl: 'testimonial/Review7.png',
+        name: 'Veeranna Benal',
+        quote: 'Uttarakhand Trip',
+        altText: 'Veeranna Benal exploring Uttarakhand'
+    },
+    {
+        id: 't8',
+        imageUrl: 'testimonial/Review8.png',
+        name: 'Dr. Sushil Saini',
+        quote: 'Andaman Trip',
+        altText: 'Dr. Sushil Saini exploring Andaman'
+    },
+    {
+        id: 't9',
+        imageUrl: 'testimonial/Review9.png',
+        name: 'Mr.Shailendra Jadon',
+        quote: 'Thailand Trip',
+        altText: 'Mr.Shailendra Jadon exploring Thailand'
     }
 ];
 
-const SingleTestimonialDisplay = ({ testimonial, isActive }) => {
-    // This component will display one testimonial with a fade-in/out effect
-    return (
-        <div
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-        >
-            <div className="relative w-full h-full max-w-md mx-auto aspect-square rounded-xl shadow-2xl overflow-hidden group"> {/* Centered and sized card */}
-                <img
-                    src={testimonial.imageUrl}
-                    alt={testimonial.altText || `Testimonial from ${testimonial.name}`}
-                    className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
-                    onError={(e) => { e.target.onerror = null; e.target.src=`https://placehold.co/400x400/E2E8F0/475569?text=Client+Photo`; }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6">
-                    <h4 className="text-white text-xl font-semibold mb-1">{testimonial.name}</h4>
-                    <p className="text-slate-200 text-sm leading-relaxed line-clamp-3">{testimonial.quote}</p> {/* line-clamp for longer quotes */}
-                </div>
+const TestimonialCard = ({ testimonial, isActive }) => (
+    <div
+        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+        aria-hidden={!isActive}
+    >
+        <div className="relative w-full h-full max-w-2xl mx-auto aspect-square rounded-2xl shadow-lg overflow-hidden group">
+            <img
+                src={testimonial.imageUrl}
+                alt={testimonial.altText || `Testimonial from ${testimonial.name}`}
+                className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+                onError={(e) => { e.target.src = 'https://placehold.co/576x576/E2E8F0/475569?text=Client+Photo'; }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6">
+                <h4 className="text-white text-2xl font-bold mb-1">{testimonial.name}</h4>
+                <p className="text-slate-200 text-base leading-relaxed line-clamp-3">{testimonial.quote}</p>
             </div>
         </div>
-    );
-};
+    </div>
+);
 
 function Testimonial() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const intervalTime = 5000; // Change testimonial every 5 seconds
+    const intervalRef = useRef(null);
+    const intervalTime = 5000;
 
-    useEffect(() => {
-        if (testimonialsData.length <= 1) return; // No need for interval if 0 or 1 testimonial
-
-        const timer = setInterval(() => {
+    const startAutoSlide = () => {
+        if (testimonialsData.length <= 1) return;
+        intervalRef.current = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonialsData.length);
         }, intervalTime);
+    };
 
-        return () => clearInterval(timer); // Cleanup timer on component unmount
-    }, [testimonialsData.length, intervalTime]);
+    const stopAutoSlide = () => {
+        clearInterval(intervalRef.current);
+    };
 
-    if (!testimonialsData || testimonialsData.length === 0) {
+    useEffect(() => {
+        startAutoSlide();
+        return stopAutoSlide;
+    }, []);
+
+    if (testimonialsData.length === 0) {
         return (
             <section className="bg-slate-100 py-16 md:py-24">
                 <div className="container mx-auto px-4 text-center">
@@ -88,17 +120,20 @@ function Testimonial() {
     return (
         <section className="bg-slate-100 py-16 md:py-24">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12 md:mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-sky-600 mb-3">Hear From Our Happy Travelers</h2>
-                    <p className="text-md md:text-lg text-slate-600 max-w-2xl mx-auto">
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold text-sky-600 mb-3">Hear From Our Happy Travelers</h2>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                         Real stories from real adventurers who chose Tourist Getaways for their memorable journeys.
                     </p>
                 </div>
 
-                {/* Container for the single testimonial display, relative for absolute positioning of items */}
-                <div className="relative w-full max-w-md mx-auto h-[400px] sm:h-[450px]"> {/* Fixed height for the container */}
+                <div
+                    className="relative w-full max-w-2xl mx-auto h-[560px] sm:h-[620px]"
+                    onMouseEnter={stopAutoSlide}
+                    onMouseLeave={startAutoSlide}
+                >
                     {testimonialsData.map((testimonial, index) => (
-                        <SingleTestimonialDisplay
+                        <TestimonialCard
                             key={testimonial.id}
                             testimonial={testimonial}
                             isActive={index === currentIndex}
@@ -106,17 +141,18 @@ function Testimonial() {
                     ))}
                 </div>
 
-                {/* Optional: Dots for navigation */}
                 {testimonialsData.length > 1 && (
-                    <div className="flex justify-center space-x-2 mt-8">
+                    <div className="flex justify-center gap-3 mt-8">
                         {testimonialsData.map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => setCurrentIndex(index)}
-                                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                                    index === currentIndex ? 'bg-sky-600' : 'bg-slate-300 hover:bg-slate-400'
+                                className={`w-4 h-4 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${
+                                    index === currentIndex
+                                        ? 'bg-sky-600 scale-110'
+                                        : 'bg-slate-300 hover:bg-slate-400'
                                 }`}
-                                aria-label={`Go to testimonial ${index + 1}`}
+                                aria-label={`View testimonial ${index + 1}`}
                             />
                         ))}
                     </div>

@@ -5,7 +5,8 @@ import HomePage from './pages/HomePage.jsx';
 import DomesticPackagesPage from './pages/DomesticPackagesPage';
 import InternationalPackagesPage from './pages/InternationalPackagesPage';
 import ContactUsPage from './pages/ContactUsPage';
-import DeprecatedPage from './pages/DeprecatedPage.jsx'; // Ensure this component exists
+import TestimonialsPage from './pages/TestimonialsPage'; // Import the new page
+import DeprecatedPage from './pages/DeprecatedPage.jsx';
 
 // Replace with your actual raw GitHub file URL
 const URL = 'https://raw.githubusercontent.com/HKS-8999/tourist_getaway/main/app-config.txt';
@@ -77,6 +78,7 @@ function App() {
                 <Route path="/domestic-packages" element={<LayoutWithNavbar><DomesticPackagesPage /></LayoutWithNavbar>} />
                 <Route path="/international-packages" element={<LayoutWithNavbar><InternationalPackagesPage /></LayoutWithNavbar>} />
                 <Route path="/contact-us" element={<LayoutWithNavbar><ContactUsPage /></LayoutWithNavbar>} />
+                <Route path="/testimonials" element={<LayoutWithNavbar><TestimonialsPage /></LayoutWithNavbar>} /> {/* Add this line */}
             </Routes>
         </Router>
     );
