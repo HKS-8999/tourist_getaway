@@ -10,6 +10,14 @@ const videoTestimonialsData = [
         videoUrl: '/testimonial/Review1_vid.mp4', // Ensure this path is correct relative to your public folder
         thumbnailUrl: '/testimonial/Review1_vid_thumbnail.png', // Ensure this path is correct
         description: "Hear about Mrs Smriti Singh's fantastic overall experience at Andaman Islands."
+    },
+    {
+        id: 'v2',
+        title: 'Dubai - A City of Dreams and Luxury',
+        travelerName: 'Mr. Vishvesh Dave ',
+        videoUrl: '/testimonial/Review2_vid.mp4', // Ensure this path is correct relative to your public folder
+        thumbnailUrl: '/testimonial/Review2_vid_thumbnail.png', // Ensure this path is correct
+        description: "Hear Mr. Vishvesh Dave as he shares his experience of Dubai."
     }
     // Add more videos as needed
 ];
@@ -65,7 +73,7 @@ function TestimonialsPage() {
                                             poster={video.thumbnailUrl || `https://placehold.co/1280x720/E2E8F0/475569?text=Video+Preview`}
                                             controls
                                             preload="metadata"
-                                            className="w-full h-full object-cover" // Video fills the aspect ratio container
+                                            className="w-full h-full object-contain bg-black"
                                         >
                                             Your browser does not support the video tag.
                                         </video>
