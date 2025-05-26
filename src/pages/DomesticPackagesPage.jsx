@@ -364,7 +364,6 @@ function DomesticPackagesPage() {
                 )}
             </div>
             <BookingFormModal isOpen={isModalOpen} onClose={closeModal} selectedCity={selectedCity} />
-            <Testimonial />
 
         </div>
     );
