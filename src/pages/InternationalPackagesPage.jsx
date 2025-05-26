@@ -27,6 +27,12 @@ const internationalCities = [
         name: "Maldives",
         imageUrl: "international/maldives.jpg",
         description: "Luxurious overwater bungalows and pristine turquoise lagoons."
+    },
+    {
+        id: "dubai",
+        name: "Dubai",
+        imageUrl: "international/dubai.jpg",
+        description: "Glorious architecture, desert adventures, and luxury shopping."
     }
 ]
 
